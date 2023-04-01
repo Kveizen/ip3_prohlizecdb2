@@ -1,0 +1,14 @@
+    <form method="post" action="login.php">
+        <div class="form-group">
+            <label for="login">Username</label>
+            <input type="text" class="form-control" id="login" name="login" value="{{login}}"/>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" class="form-control" id="password" name="password">
+            {{#errors}}
+                <div class="alert alert-danger">Údaje nebyly zadány správně</div>
+            {{/errors}}
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
