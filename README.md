@@ -9,5 +9,5 @@
 }</br>
 </br>
 
-2. Dále je potřeba nainstalovat composer a v terminalu spustit: **composer install** a **composer update**
+2. Dále je potřeba nainstalovat composer a v terminalu spustit tyto commandy: **composer install** a **composer update**
 
