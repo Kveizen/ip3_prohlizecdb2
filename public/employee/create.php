@@ -6,14 +6,25 @@ class EmployeeCreatePage extends CRUDPage
     private ?Employee $employee;
     private ?array $errors = [];
     private int $state;
-    private array $rooms = [];
-    
+    private $keys;
+    private $rooms;
 
     protected function prepare(): void
     {
         parent::prepare();
         $this->findState();
-        $this->title = "Založit nového zaměstnance";
+        $this->title = "Zapsat nového zaměstnance";   
+        
+        $stmtRoom = PDOProvider::get()->prepare("SELECT room_id, no, name FROM room ORDER BY no ASC");
+        $stmtRoom->execute([]);
+        while ($room = $stmtRoom->fetch())
+        {
+            $this->rooms[] = [
+                'room_id' => $room->room_id,
+                'no' => $room->no,
+                'name' => $room->name
+            ];
+        }
 
         //když chce formulář
         if ($this->state === self::STATE_FORM_REQUESTED)
@@ -22,10 +33,12 @@ class EmployeeCreatePage extends CRUDPage
             $this->employee = new Employee();
         }
 
+
         //když poslal data
         elseif($this->state === self::STATE_DATA_SENT) {
             //načti je
             $this->employee = Employee::readPost();
+            $this->keys = filter_input(INPUT_POST, 'keys',FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
 
             //zkontroluj je, jinak formulář
             $this->errors = [];
@@ -37,7 +50,7 @@ class EmployeeCreatePage extends CRUDPage
             else
             {
                 //ulož je
-               $success = $this->employee->insert();
+                $success = $this->employee->insert();
 
                 //přesměruj
                $this->redirect(self::ACTION_INSERT, $success);
@@ -50,8 +63,10 @@ class EmployeeCreatePage extends CRUDPage
         return MustacheProvider::get()->render(
             'employeeForm',
             [
-                'employee' => $this->room,
-                'errors' => $this->errors
+                'employee' => $this->employee,
+                'errors' => $this->errors,
+                'rooms' => $this->rooms,
+                'create' => true
             ]
         );
     }

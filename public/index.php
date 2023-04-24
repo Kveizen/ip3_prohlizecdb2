@@ -10,7 +10,7 @@ class IndexPage extends BasePage
 
     protected function pageBody()
     {
-        
+        return "";
     }
 
 }

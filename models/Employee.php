@@ -102,9 +102,9 @@ class Employee
 
     public function insert() : bool
     {
-        $query = "INSERT INTO ".self::DB_TABLE." (`name`, `surname`, `room`, `wage`, `job`, `admin`) VALUES (:name, :surname, :room, :wage, :job, :admin)";
-        $stmt = PDOProvider::get()->prepare($query);
-        $result = $stmt->execute(['name'=>$this->name, 'surname'=>$this->surname, 'room'=>$this->room, 'wage'=>$this->wage, 'job'=>$this->job, 'admin'=>$this->admin]);
+        $query = "INSERT INTO ".self::DB_TABLE." (`name`, `surname`, `room`, `wage`, `job`, `login`, `password`, `admin`) VALUES (:name, :surname, :room, :wage, :job, :login, :password, :admin)";
+        $stmt2 = PDOProvider::get()->prepare($query);
+        $result = $stmt2->execute(['name'=>$this->name, 'surname'=>$this->surname, 'room' => $this->room, 'wage'=>$this->wage, 'job'=>$this->job, 'login' => $this->login, 'password' => $this->password, 'admin'=>$this->admin]);
         if (!$result)
             return false;
 
@@ -117,9 +117,10 @@ class Employee
         if (!isset($this->employee_id) || !$this->employee_id)
             throw new Exception("Cannot update model without ID");
 
-        $query = "UPDATE ".self::DB_TABLE." SET `name`= :name, `surname`= :surname, `room`= :room, `wage`= :wage, `job`= :job, `admin= :admin` WHERE `employee_id` = :employeeId";
+
+        $query = "UPDATE ".self::DB_TABLE." SET `name`= :name, `surname`= :surname, `room`= :room, `wage`= :wage, `job`= :job, `admin`= :admin WHERE `employee_id` = :employee_id";
         $stmt = PDOProvider::get()->prepare($query);
-        return $stmt->execute(['id'=>$this->employee_id, 'name'=>$this->name, 'surname'=>$this->surname, 'room'=>$this->room, 'wage'=>$this->wage, 'job'=>$this->job, 'admin'=>$this->admin]);
+        return $stmt->execute(['name'=>$this->name, 'surname'=>$this->surname, 'room'=>$this->room, 'wage'=>$this->wage, 'job'=>$this->job, 'admin'=>$this->admin, 'employee_id'=>$this->employee_id]);
     }
 
     public function delete() : bool
@@ -198,8 +199,15 @@ class Employee
         $employee->login = filter_input(INPUT_POST, 'login');
         if ($employee->login)
             $employee->login = trim($employee->login);
+            
+        $employee->password = filter_input(INPUT_POST, 'password');
     
-        $employee->admin = filter_input(INPUT_POST, 'admin', FILTER_VALIDATE_INT);
+        if (isset($_POST['admin'])) {
+            $employee->admin = filter_input(INPUT_POST, 'admin', FILTER_VALIDATE_INT);
+        } 
+        else {
+            $employee->admin = false;
+        }
 
         return $employee;
     }

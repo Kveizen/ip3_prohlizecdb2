@@ -41,23 +41,18 @@ class LoginPage extends BasePage
         $stmt = PDOProvider::get()->prepare("SELECT name, surname, employee_id, login, password, admin FROM employee WHERE login = :login");
         $stmt->execute(["login" => $this->login]);
         $user_password = $stmt->fetch();
-        var_dump($user_password);
         if ($this->password != $user_password->password){
             $this->errors[] = true;
             $this->pageBody();
-            echo "neni loglej";
             return;
         }
         else
         {
-            echo "je";
             //session_abort();
             session_start();
             $_SESSION['userId'] = $user_password->employee_id;
             $_SESSION['username'] = $user_password->login;
             $_SESSION['admin'] = $user_password->admin;
-            
-            var_dump($_SESSION);
         }
     }
 

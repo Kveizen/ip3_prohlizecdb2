@@ -48,7 +48,7 @@ abstract class BasePage
                 ];
             }
             else{
-                header('Location: ./login.php');
+                header('Location: /login.php');
             }
 
             $m = MustacheProvider::get();
@@ -67,7 +67,7 @@ abstract class BasePage
             if (AppConfig::get('debug'))
                 throw $e;
 
-            //$e = new BaseException("Server error", 500);
+            $e = new BaseException("Server error", 500);
             $exceptionPage = new ExceptionPage($e);
             $exceptionPage->render();
             exit;

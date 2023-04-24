@@ -1,8 +1,7 @@
 <table class='table table-striped'>
     <tr>
         <th>Surname</th>
-        <th>No.</th>
-        <th>Phone</th>
+        <th>Wage</th>
         <th>Job</th>
         <th>Actions</th>
     </tr>
@@ -12,22 +11,23 @@
         <td>
             <a href='detail.php?employeeId={{employee_id}}'> {{surname}} {{name}}</a>
         </td>
-        <td>{{no}}</td>
-        <td>{{#phone}}{{phone}}{{/phone}}{{^phone}}&mdash;{{/phone}}</td>
+        <td>{{wage}}</td>
         <td>{{job}}</td>
         <td>
         <form action="update.php" method="get" style="display: inline-block">
             <input type="hidden" name="employeeId" value="{{employee_id}}">
             {{#isadmin}}
                 <input type="submit" value="Upravit" class="btn btn-info">
+			<input type="hidden" name="employeeId" value="{{employee_id}}">
+                <input type="submit" value="Smazat" class="btn btn-danger" onclick="return confirm('Opravdu chcete smazat zaměstnance?\nAkce je nevratná!');">
             {{/isadmin}}
             {{^isadmin}}
                 <input type="submit" value="Upravit" class="btn btn-info" disabled>
+			<input type="hidden" name="employeeId" value="{{employee_id}}">
+                <input type="submit" value="Smazat" class="btn btn-danger" disabled onclick="return confirm('Opravdu chcete smazat zaměstnance?\nAkce je nevratná!');">
             {{/isadmin}}
             </form>
             <form action="delete.php" method="post" style="display: inline-block">
-                <input type="hidden" name="employeeId" value="{{employee_id}}">
-                <input type="submit" value="Smazat" class="btn btn-danger" onclick="return confirm('Opravdu chcete smazat zaměstnance?\nAkce je nevratná!');">
             </form>
         </td>
     </tr>

@@ -24,8 +24,14 @@
                 {{/admin}}
             </form>
             <form action="delete.php" method="post" style="display: inline-block">
-                <input type="hidden" name="roomId" value="{{room_id}}">
-                <input type="submit" value="Smazat" class="btn btn-danger" onclick="return confirm('Opravdu chcete smazat místnost?\nAkce je nevratná!');">
+			{{#admin}}
+			<input type="hidden" name="roomId" value="{{room_id}}">
+                <input type="submit" value="Smazat" class="btn btn-danger" onclick="return confirm('Opravdu chcete smazat místnost?\nAkce 
+			{{/admin}}
+			{{^admin}}
+			<input type="hidden" name="roomId" value="{{room_id}}">
+                <input type="submit" value="Smazat" class="btn btn-danger" disabled onclick="return confirm('Opravdu chcete smazat místnost?\nAkce je nevratná!');">
+			{{/admin}}
             </form>
         </td>
     </tr>
